@@ -19,6 +19,13 @@ public class Comment {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "text", nullable = false, length = Integer.MAX_VALUE)
+    private String text;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
+    private Instant createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "post_id", nullable = false)
@@ -28,12 +35,5 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @Column(name = "text", nullable = false, length = Integer.MAX_VALUE)
-    private String text;
-
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
-    private Instant createdAt;
 
 }

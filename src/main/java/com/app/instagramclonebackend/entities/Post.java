@@ -15,16 +15,14 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "posts")
+
+// Mapping entity fields to Database
+
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     @Column(name = "caption", length = Integer.MAX_VALUE)
     private String caption;
@@ -41,5 +39,32 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private Set<Like> likes = new LinkedHashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+
+    // Add and remove comments
+    public void addComment(Comment comment){
+        this.comments.add(comment);
+        comment.setPost(this);
+    }
+    public void removeComment(Comment comment){
+        this.comments.remove(comment);
+        comment.setPost(null);
+    }
+
+
+    // Add and remove likes
+    public void addLike(Like like){
+        this.likes.add(like);
+        like.setPost(this);
+    }
+    public void removeLike(Like like){
+        this.likes.remove(like);
+        like.setPost(null);
+    }
 
 }
